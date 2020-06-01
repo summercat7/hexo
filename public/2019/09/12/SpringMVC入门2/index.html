@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.4"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.4"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><title>SpringMVC入门2 | WQP</title></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">SpringMVC入门2</h1><a id="logo" href="/.">WQP</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">SpringMVC入门2</h1><div class="post-meta"><a href="/2019/09/12/SpringMVC入门2/#comments" class="comment-count"></a><p><span class="date">Sep 12, 2019</span><span><a href="/categories/java/" class="category">java</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p>常用的注解</p>
+<h2 id="RequestParam"><a href="#RequestParam" class="headerlink" title="RequestParam"></a>RequestParam</h2><ul>
+<li><ol>
+<li>作用：把请求中的指定名称的参数传递给控制器中的形参赋值</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>属性<ul>
+<li><ol>
+<li>value：请求参数中的名称</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>required：请求参数中是否必须提供此参数，默认值是true，必须提供</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>代码如下<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 接收请求</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/hello"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">(@RequestParam(value=<span class="string">"username"</span>,required=<span class="keyword">false</span>)</span>String name) </span>&#123;</span><br><span class="line">	System.out.println(<span class="string">"aaaa"</span>);</span><br><span class="line">	System.out.println(name);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="RequestBody"><a href="#RequestBody" class="headerlink" title="RequestBody"></a>RequestBody</h2><ul>
+<li><ol>
+<li>作用：用于获取请求体的内容（注意：get方法不可以）</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>属性<ul>
+<li><ol>
+<li>required：是否必须有请求体，默认值是true</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>代码如下<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 接收请求</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/hello"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">(@RequestBody String body)</span> </span>&#123;</span><br><span class="line">	System.out.println(<span class="string">"aaaa"</span>);</span><br><span class="line">	System.out.println(body);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="PathVariable"><a href="#PathVariable" class="headerlink" title="PathVariable"></a>PathVariable</h2><ul>
+<li><ol>
+<li>作用：拥有绑定url中的占位符的。例如：url中有/delete/{id}，{id}就是占位符</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>属性<ol>
+<li>value：指定url中的占位符名称</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>Restful风格的URL<ul>
+<li><ol>
+<li>请求路径一样，可以根据不同的请求方式去执行后台的不同方法</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>restful风格的URL优点<ul>
+<li><ol>
+<li>结构清晰</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>符合标准</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>易于理解</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>扩展方便</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>代码如下<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"user/hello/1"</span>&gt;</span>入门案例<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">``````java</span><br><span class="line">/**</span><br><span class="line">* 接收请求</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">@RequestMapping(path="/hello/&#123;id&#125;")</span><br><span class="line">public String sayHello(@PathVariable(value="id") String id) &#123;</span><br><span class="line">	System.out.println(id);</span><br><span class="line">	return "success";</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="RequestHeader"></a>RequestHeader</h2><ul>
+<li><ol>
+<li>作用：获取指定请求头的值</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>属性<ul>
+<li><ol>
+<li>value：请求头的名称</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>代码如下<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/hello"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">(@RequestHeader(value=<span class="string">"Accept"</span>)</span> String header) </span>&#123;</span><br><span class="line">	System.out.println(header);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="CookieValue"><a href="#CookieValue" class="headerlink" title="CookieValue"></a>CookieValue</h2><ul>
+<li><ol>
+<li>作用：用于获取指定cookie的名称的值</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>属性<ul>
+<li><ol>
+<li>value：cookie的名称</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>代码<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/hello"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">(@CookieValue(value=<span class="string">"JSESSIONID"</span>)</span> String cookieValue) </span>&#123;</span><br><span class="line">	System.out.println(cookieValue);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="ModelAttribute"></a>ModelAttribute</h2><ul>
+<li><ol>
+<li>作用<ul>
+<li><ol>
+<li>出现在方法上：表示当前方法会在控制器方法执行前线执行。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>出现在参数上：获取指定的数据给参数赋值。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>应用场景<ul>
+<li><ol>
+<li>当提交表单数据不是完整的实体数据时，保证没有提交的字段使用数据库原来的数据。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<ol start="3">
+<li><p>具体的代码</p>
+<ul>
+<li><ol>
+<li>修饰的方法有返回值<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 作用在方法，先执行</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@ModelAttribute</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">showUser</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">	System.out.println(<span class="string">"showUser执行了..."</span>);</span><br><span class="line">	<span class="comment">// 模拟从数据库中查询对象</span></span><br><span class="line">	User user = <span class="keyword">new</span> User();</span><br><span class="line">	user.setName(<span class="string">"哈哈"</span>);</span><br><span class="line">	user.setPassword(<span class="string">"123"</span>);</span><br><span class="line">	user.setMoney(<span class="number">100</span>d);</span><br><span class="line">	<span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 修改用户的方法</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> cookieValue</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/updateUser"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">updateUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">	System.out.println(user);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>修饰的方法没有返回值<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 作用在方法，先执行</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> name</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@ModelAttribute</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showUser</span><span class="params">(String name,Map&lt;String, User&gt; map)</span> </span>&#123;</span><br><span class="line">	System.out.println(<span class="string">"showUser执行了..."</span>);</span><br><span class="line">	<span class="comment">// 模拟从数据库中查询对象</span></span><br><span class="line">	User user = <span class="keyword">new</span> User();</span><br><span class="line">	user.setName(<span class="string">"哈哈"</span>);</span><br><span class="line">	user.setPassword(<span class="string">"123"</span>);</span><br><span class="line">	user.setMoney(<span class="number">100</span>d);</span><br><span class="line">	map.put(<span class="string">"abc"</span>, user);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 修改用户的方法</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> cookieValue</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/updateUser"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">updateUser</span><span class="params">(@ModelAttribute(value=<span class="string">"abc"</span>)</span> User user) </span>&#123;</span><br><span class="line">	System.out.println(user);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="SessionAttributes"><a href="#SessionAttributes" class="headerlink" title="SessionAttributes"></a>SessionAttributes</h2><ul>
+<li><ol>
+<li>作用：用于多次执行控制器方法间的参数共享</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>属性<ul>
+<li><ol>
+<li>value：指定存入属性的名称</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>代码如下<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/user"</span>)</span><br><span class="line"><span class="meta">@SessionAttributes</span>(value= &#123;<span class="string">"username"</span>,<span class="string">"password"</span>,<span class="string">"age"</span>&#125;,types=&#123;String.class,Integer.class&#125;) <span class="comment">// 把数据存入到session域对象中</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 向session中存入值</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/save"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">save</span><span class="params">(Model model)</span> </span>&#123;</span><br><span class="line">	System.out.println(<span class="string">"向session域中保存数据"</span>);</span><br><span class="line">	model.addAttribute(<span class="string">"username"</span>, <span class="string">"root"</span>);</span><br><span class="line">	model.addAttribute(<span class="string">"password"</span>, <span class="string">"123"</span>);</span><br><span class="line">	model.addAttribute(<span class="string">"age"</span>, <span class="number">20</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 从session中获取值</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/find"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">find</span><span class="params">(ModelMap modelMap)</span> </span>&#123;</span><br><span class="line">	String username = (String) modelMap.get(<span class="string">"username"</span>);</span><br><span class="line">	String password = (String) modelMap.get(<span class="string">"password"</span>);</span><br><span class="line">	Integer age = (Integer) modelMap.get(<span class="string">"age"</span>);</span><br><span class="line">	System.out.println(username + <span class="string">" : "</span>+password +<span class="string">" : "</span>+age);</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 清除值</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path=<span class="string">"/delete"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">delete</span><span class="params">(SessionStatus status)</span> </span>&#123;</span><br><span class="line">		status.setComplete();</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+</div><div class="post-copyright"><blockquote><p>原文作者: JasonWong</p><p>原文链接: <a href="https://wang-qp.github.io/2019/09/12/SpringMVC入门2/">https://wang-qp.github.io/2019/09/12/SpringMVC入门2/</a></p><p>版权声明: 转载请注明出处(必须保留作者署名及链接)</p></blockquote></div><div class="tags"><a href="/tags/框架/">框架</a></div><div class="post-share"><div class="social-share"><span>分享到:</span></div></div><div class="post-nav"><a href="/2019/09/14/SpringMVC入门3/" class="pre">SpringMVC入门3</a><a href="/2019/09/11/SpringMVC入门1/" class="next">SpringMVC入门1</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RequestParam"><span class="toc-text">RequestParam</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RequestBody"><span class="toc-text">RequestBody</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PathVariable"><span class="toc-text">PathVariable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RequestHeader"><span class="toc-text">RequestHeader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CookieValue"><span class="toc-text">CookieValue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ModelAttribute"><span class="toc-text">ModelAttribute</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SessionAttributes"><span class="toc-text">SessionAttributes</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-高可用的分布式配置中心/">SpringCloud_高可用的分布式配置中心</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-config/">SpringCloud_config</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-zuul/">SpringCloud_zuul</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-hystrix/">SpringCloud_hystrix</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-feign/">SpringCloud_feign</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud_ribbon/">SpringCloud_ribbon</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud入门1：创建工程/">SpringCloud入门1：创建工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/10/SpringBoot入门6：整合redis/">SpringBoot入门6：整合redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/10/SpringBoot入门5：整合mybatis/">SpringBoot入门5：整合mybatis</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/09/SpringBoot入门4：JPA/">SpringBoot入门4：JPA</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">3</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/框架/" style="font-size: 15px;">框架</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/JQuery/" style="font-size: 15px;">JQuery</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><!--pif theme.baidusitemap
+  a(href=config.root+"baidusitemap.xml")= __("baidusitemap")
+  |  |  
+if theme.feed
+  a(href=config.root+"atom.xml")= __("footer_rss")
+  |  |  
+a(href=config.root+"about/")= __("contact_author")--><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">JasonWong.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.4"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.4" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>
