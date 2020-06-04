@@ -1,4 +1,2 @@
-:: @echo off
-:: e:
-:: cd E:\Code\nodejs\hexo
-hexo clean&& git add --all && git commit -m "1.0" && git push -u origin master &&hexo g&&hexo d
+@echo off
+hexo clean&&hexo g&&hexo d

@@ -1,6 +1,4 @@
-:: @echo off
-:: e:
-:: cd E:\Code\nodejs\hexo
+@echo off
 set /p name=input pages name:
 
 echo name:%name%
