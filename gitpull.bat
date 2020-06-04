@@ -1,0 +1,1 @@
+hexo clean && git pull origin master
