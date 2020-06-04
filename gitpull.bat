@@ -6,3 +6,4 @@ if "%type%"=="1" (
 ) else (
 	echo error
 )
+pause
