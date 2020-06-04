@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.4"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.4"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><title>Response笔记 | WQP</title></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Response笔记</h1><a id="logo" href="/.">WQP</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Response笔记</h1><div class="post-meta"><a href="/2019/07/22/Response笔记/#comments" class="comment-count"></a><p><span class="date">Jul 22, 2019</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><h2 id="HTTP协议："><a href="#HTTP协议：" class="headerlink" title="HTTP协议："></a>HTTP协议：</h2><pre><code>1. 请求消息：客户端发送给服务器端的数据
+    * 数据格式：
+        1. 请求行
+        2. 请求头
+        3. 请求空行
+        4. 请求体
+2. 响应消息：服务器端发送给客户端的数据
+    * 数据格式：
+        1. 响应行
+            1. 组成：协议/版本 响应状态码 状态码描述
+            2. 响应状态码：服务器告诉客户端浏览器本次请求和响应的一个状态。
+                1. 状态码都是3位数字 
+                2. 分类：
+                    1. 1xx：服务器就收客户端消息，但没有接受完成，等待一段时间后，发送1xx多状态码
+                    2. 2xx：成功。代表：200
+                    3. 3xx：重定向。代表：302(重定向)，304(访问缓存)
+                    4. 4xx：客户端错误。
+                        * 代表：
+                            * 404（请求路径没有对应的资源） 
+                            * 405：请求方式没有对应的doXxx方法
+                    5. 5xx：服务器端错误。代表：500(服务器内部出现异常)
+
+
+        2. 响应头：
+            1. 格式：头名称： 值
+            2. 常见的响应头：
+                1. Content-Type：服务器告诉客户端本次响应体数据格式以及编码格式
+                2. Content-disposition：服务器告诉客户端以什么格式打开响应体数据
+                    * 值：
+                        * in-line:默认值,在当前页面内打开
+                        * attachment;filename=xxx：以附件形式打开响应体。文件下载
+        3. 响应空行
+        4. 响应体:传输的数据
+
+
+    * 响应字符串格式
+        HTTP/1.1 200 OK
+        Content-Type: text/html;charset=UTF-8
+        Content-Length: 101
+        Date: Wed, 06 Jun 2018 07:08:42 GMT
+
+        &lt;html&gt;
+          &lt;head&gt;
+            &lt;title&gt;$Title$&lt;/title&gt;
+          &lt;/head&gt;
+          &lt;body&gt;
+          hello , response
+          &lt;/body&gt;
+        &lt;/html&gt;</code></pre><h2 id="Response对象"><a href="#Response对象" class="headerlink" title="Response对象"></a>Response对象</h2><pre><code>* 功能：设置响应消息
+    1. 设置响应行
+        1. 格式：HTTP/1.1 200 ok
+        2. 设置状态码：setStatus(int sc) 
+    2. 设置响应头：setHeader(String name, String value) 
+
+    3. 设置响应体：
+        * 使用步骤：
+            1. 获取输出流
+                * 字符输出流：PrintWriter getWriter()
+
+                * 字节输出流：ServletOutputStream getOutputStream()
+
+            2. 使用输出流，将数据输出到客户端浏览器
+
+
+* 案例：
+    1. 完成重定向
+        * 重定向：资源跳转的方式
+        * 代码实现：
+            //1. 设置状态码为302
+            response.setStatus(302);
+            //2.设置响应头location
+            response.setHeader(&quot;location&quot;,&quot;/day15/responseDemo2&quot;);
+
+
+            //简单的重定向方法
+            response.sendRedirect(&quot;/day15/responseDemo2&quot;);
+
+        * 重定向的特点:redirect
+            1. 地址栏发生变化
+            2. 重定向可以访问其他站点(服务器)的资源
+            3. 重定向是两次请求。不能使用request对象来共享数据
+        * 转发的特点：forward
+            1. 转发地址栏路径不变
+            2. 转发只能访问当前服务器下的资源
+            3. 转发是一次请求，可以使用request对象来共享数据
+
+        * forward 和  redirect 区别
+
+        * 路径写法：
+            1. 路径分类
+                1. 相对路径：通过相对路径不可以确定唯一资源
+                    * 如：./index.html
+                    * 不以/开头，以.开头路径
+
+                    * 规则：找到当前资源和目标资源之间的相对位置关系
+                        * ./：当前目录
+                        * ../:后退一级目录
+                2. 绝对路径：通过绝对路径可以确定唯一资源
+                    * 如：http://localhost/day15/responseDemo2        /day15/responseDemo2
+                    * 以/开头的路径
+
+                    * 规则：判断定义的路径是给谁用的？判断请求将来从哪儿发出
+                        * 给客户端浏览器使用：需要加虚拟目录(项目的访问路径)
+                            * 建议虚拟目录动态获取：request.getContextPath()
+                            * &lt;a&gt; , &lt;form&gt; 重定向...
+                        * 给服务器使用：不需要加虚拟目录
+                            * 转发路径
+
+
+
+
+    2. 服务器输出字符数据到浏览器
+        * 步骤：
+            1. 获取字符输出流
+            2. 输出数据
+
+        * 注意：
+            * 乱码问题：
+                1. PrintWriter pw = response.getWriter();获取的流的默认编码是ISO-8859-1
+                2. 设置该流的默认编码
+                3. 告诉浏览器响应体使用的编码
+
+                //简单的形式，设置编码，是在获取流之前设置
+                response.setContentType(&quot;text/html;charset=utf-8&quot;);
+    3. 服务器输出字节数据到浏览器
+        * 步骤：
+            1. 获取字节输出流
+            2. 输出数据
+
+    4. 验证码
+        1. 本质：图片
+        2. 目的：防止恶意表单注册
+    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet</span>(<span class="string">"/checkCodeServlet"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CheckCodeServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span><span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//服务器通知浏览器不要缓存</span></span><br><span class="line">		response.setHeader(<span class="string">"pragma"</span>,<span class="string">"no-cache"</span>);</span><br><span class="line">		response.setHeader(<span class="string">"cache-control"</span>,<span class="string">"no-cache"</span>);</span><br><span class="line">		response.setHeader(<span class="string">"expires"</span>,<span class="string">"0"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//在内存中创建一个长80，宽30的图片，默认黑色背景</span></span><br><span class="line">		<span class="comment">//参数一：长</span></span><br><span class="line">		<span class="comment">//参数二：宽</span></span><br><span class="line">		<span class="comment">//参数三：颜色</span></span><br><span class="line">		<span class="keyword">int</span> width = <span class="number">80</span>;</span><br><span class="line">		<span class="keyword">int</span> height = <span class="number">30</span>;</span><br><span class="line">		BufferedImage image = <span class="keyword">new</span> BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//获取画笔</span></span><br><span class="line">		Graphics g = image.getGraphics();</span><br><span class="line">		<span class="comment">//设置画笔颜色为灰色</span></span><br><span class="line">		g.setColor(Color.GRAY);</span><br><span class="line">		<span class="comment">//填充图片</span></span><br><span class="line">		g.fillRect(<span class="number">0</span>,<span class="number">0</span>, width,height);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//产生4个随机验证码，12Ey</span></span><br><span class="line">		String checkCode = getCheckCode();</span><br><span class="line">		<span class="comment">//将验证码放入HttpSession中</span></span><br><span class="line">		request.getSession().setAttribute(<span class="string">"CHECKCODE_SERVER"</span>,checkCode);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//设置画笔颜色为黄色</span></span><br><span class="line">		g.setColor(Color.YELLOW);</span><br><span class="line">		<span class="comment">//设置字体的小大</span></span><br><span class="line">		g.setFont(<span class="keyword">new</span> Font(<span class="string">"黑体"</span>,Font.BOLD,<span class="number">24</span>));</span><br><span class="line">		<span class="comment">//向图片上写入验证码</span></span><br><span class="line">		g.drawString(checkCode,<span class="number">15</span>,<span class="number">25</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//将内存中的图片输出到浏览器</span></span><br><span class="line">		<span class="comment">//参数一：图片对象</span></span><br><span class="line">		<span class="comment">//参数二：图片的格式，如PNG,JPG,GIF</span></span><br><span class="line">		<span class="comment">//参数三：图片输出到哪里去</span></span><br><span class="line">		ImageIO.write(image,<span class="string">"PNG"</span>,response.getOutputStream());</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 产生4位随机字符串 </span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">getCheckCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		String base = <span class="string">"0123456789ABCDEFGabcdefg"</span>;</span><br><span class="line">		<span class="keyword">int</span> size = base.length();</span><br><span class="line">		Random r = <span class="keyword">new</span> Random();</span><br><span class="line">		StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">4</span>;i++)&#123;</span><br><span class="line">			<span class="comment">//产生0到size-1的随机值</span></span><br><span class="line">			<span class="keyword">int</span> index = r.nextInt(size);</span><br><span class="line">			<span class="comment">//在base字符串中获取下标为index的字符</span></span><br><span class="line">			<span class="keyword">char</span> c = base.charAt(index);</span><br><span class="line">			<span class="comment">//将c放入到StringBuffer中去</span></span><br><span class="line">			sb.append(c);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sb.toString();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.doGet(request,response);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><h2 id="ServletContext对象："><a href="#ServletContext对象：" class="headerlink" title="ServletContext对象："></a>ServletContext对象：</h2><pre><code>1. 概念：代表整个web应用，可以和程序的容器(服务器)来通信
+2. 获取：
+    1. 通过request对象获取
+        request.getServletContext();
+    2. 通过HttpServlet获取
+        this.getServletContext();
+3. 功能：
+    1. 获取MIME类型：
+        * MIME类型:在互联网通信过程中定义的一种文件数据类型
+            * 格式： 大类型/小类型   text/html        image/jpeg
+
+        * 获取：String getMimeType(String file)  
+    2. 域对象：共享数据
+        1. setAttribute(String name,Object value)
+        2. getAttribute(String name)
+        3. removeAttribute(String name)
+
+        * ServletContext对象范围：所有用户所有请求的数据
+    3. 获取文件的真实(服务器)路径
+        1. 方法：String getRealPath(String path)  
+             String b = context.getRealPath(&quot;/b.txt&quot;);//web目录下资源访问
+             System.out.println(b);
+
+            String c = context.getRealPath(&quot;/WEB-INF/c.txt&quot;);//WEB-INF目录下的资源访问
+            System.out.println(c);
+
+            String a = context.getRealPath(&quot;/WEB-INF/classes/a.txt&quot;);//src目录下的资源访问
+            System.out.println(a);</code></pre><h2 id="案例："><a href="#案例：" class="headerlink" title="案例："></a>案例：</h2><pre><code>* 文件下载需求：
+    1. 页面显示超链接
+    2. 点击超链接后弹出下载提示框
+    3. 完成图片文件下载
+
+
+* 分析：
+    1. 超链接指向的资源如果能够被浏览器解析，则在浏览器中展示，如果不能解析，则弹出下载提示框。不满足需求
+    2. 任何资源都必须弹出下载提示框
+    3. 使用响应头设置资源的打开方式：
+        * content-disposition:attachment;filename=xxx
+
+
+* 步骤：
+    1. 定义页面，编辑超链接href属性，指向Servlet，传递资源名称filename
+    2. 定义Servlet
+        1. 获取文件名称
+        2. 使用字节输入流加载文件进内存
+        3. 指定response的响应头： content-disposition:attachment;filename=xxx
+        4. 将数据写出到response输出流
+
+
+* 问题：
+    * 中文文件问题
+        * 解决思路：
+            1. 获取客户端使用的浏览器版本信息
+            2. 根据不同的版本信息，设置filename的编码方式不同</code></pre></div><div class="post-copyright"><blockquote><p>原文作者: JasonWong</p><p>原文链接: <a href="https://wang-qp.github.io/2019/07/22/Response笔记/">https://wang-qp.github.io/2019/07/22/Response笔记/</a></p><p>版权声明: 转载请注明出处(必须保留作者署名及链接)</p></blockquote></div><div class="tags"></div><div class="post-share"><div class="social-share"><span>分享到:</span></div></div><div class="post-nav"><a href="/2019/07/24/Filter-Listener笔记/" class="pre">Filter&amp;Listener笔记</a><a href="/2019/07/22/Servlet-HTTP-Request笔记/" class="next">Servlet&amp;HTTP&amp;Request笔记</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP协议："><span class="toc-text">HTTP协议：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Response对象"><span class="toc-text">Response对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ServletContext对象："><span class="toc-text">ServletContext对象：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#案例："><span class="toc-text">案例：</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/06/04/test/">test</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/03/rocketmq/">Centos7部署RocketMQ</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/02/canal/">canal的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/02/centos防火墙/">CentOS防火墙设置</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-高可用的分布式配置中心/">SpringCloud_高可用的分布式配置中心</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-config/">SpringCloud_config</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-zuul/">SpringCloud_zuul</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-hystrix/">SpringCloud_hystrix</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud-feign/">SpringCloud_feign</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/11/SpringCloud_ribbon/">SpringCloud_ribbon</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">3</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/框架/" style="font-size: 15px;">框架</a> <a href="/tags/其他/" style="font-size: 15px;">其他</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/JQuery/" style="font-size: 15px;">JQuery</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/redis/" style="font-size: 15px;">redis</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><!--pif theme.baidusitemap
+  a(href=config.root+"baidusitemap.xml")= __("baidusitemap")
+  |  |  
+if theme.feed
+  a(href=config.root+"atom.xml")= __("footer_rss")
+  |  |  
+a(href=config.root+"about/")= __("contact_author")--><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">JasonWong.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.4"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.4" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>
