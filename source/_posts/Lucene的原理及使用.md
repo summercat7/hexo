@@ -1,7 +1,7 @@
 ---
 title: Lucene的原理及使用
 date: 2020-06-06 16:32:48
-categories: Java
+categories: java
 tags: 其他
 ---
 
