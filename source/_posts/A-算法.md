@@ -7,7 +7,9 @@ tags: 算法
 
 ## A*算法
 
- *A\*算法是一种启发式最小代价寻路算法* 
+ *A\*算法是一种启发式最小代价寻路算法*  
+
+http://theory.stanford.edu/~amitp/GameProgramming/ 
 
  **伪代码：** 
 
