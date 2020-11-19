@@ -23,7 +23,7 @@ Spring监听器在启动时会读取spring配置文件，进行spring容器的�
 <filter-mapping>  
 <filter-name>demoFilter</filter-name>
    <url-pattern>/*</url-pattern>
-</filter-mapping>12345678
+</filter-mapping>
 ```
 
 然后在过滤器的初始化方法init中：
@@ -34,7 +34,7 @@ public void init(FilterConfig filterConfig) throws ServletException {
     ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(filterConfig.getServletContext());
     RedisTemplate demoBean = (RedisTemplate)context.getBean("redisTemplate");
     System.out.println(demoBean);
- }123456
+ }
 ```
 
 经过测试，此时是可以拿到spring中的redisTemplate 这个bean的，说明spring容器确实先于过滤器初始化的。那么回到过滤器中不能注入bean的问题，原因究竟是什么呢？可以看到，这里获取bean是通过applicationContext获取的，而不是直接注入的。个人理解是：过滤器是servlet规范中定义的，并不归spring容器管理，也无法直接注入spring中的bean（会报错）。当然，要想通过spring注入的方式来使用过滤器也是有办法的,先在web.xml中定义：
@@ -55,13 +55,13 @@ public void init(FilterConfig filterConfig) throws ServletException {
 <filter-mapping>
   <filter-name>DelegatingFilterProxy</filter-name>
   <url-pattern>/*</url-pattern>
-</filter-mapping>12345678910111213141516
+</filter-mapping>
 ```
 
 然后在spring容器中配置demoFilter这个bean：
 
 ```
-<bean id="demoFilter" class="xx.framework.filter.demoFilter" />1
+<bean id="demoFilter" class="xx.framework.filter.demoFilter" />
 ```
 
 在doFilter方法中可以获取到注入的bean了：
@@ -70,7 +70,7 @@ public void init(FilterConfig filterConfig) throws ServletException {
 @Override
 public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
    System.out.println(redisTemplate.getClientList());
-}1234
+}
 ```
 
 其中redisTemplate是通过@Resource注解注入进来的。
