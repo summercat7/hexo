@@ -95,7 +95,7 @@ docker run -id --name=mycentos3 -v /usr/local/myhtml(宿主机目录):/usr/local
 #查看容器信息
 docker inspect mycentos3
 #查看容器ip
-docker inspect --format='{{.NetworkSettings.IPAddress}}' mycentos3
+docker inspect --format='{ {.NetworkSettings.IPAddress} }' mycentos3
 
 #删除容器(先停止容器)
 docker rm mycentos3
