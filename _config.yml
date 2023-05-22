@@ -79,5 +79,6 @@ theme: BlueLake
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/Wang-QP/Wang-QP.github.io.git
+  # repo: https://github.com/Wang-QP/Wang-QP.github.io.git
+  repo: git@github.com:Wang-QP/Wang-QP.github.io.git
   branch: master
